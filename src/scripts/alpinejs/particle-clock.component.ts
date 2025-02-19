@@ -207,6 +207,9 @@ Alpine.data('particleClock', () => {
         for (const digit of digits) {
           digit.object.material.uniforms.uFinalColor.value.set(color)
         }
+        for (const colon of colons) {
+          colon.material.uniforms.uFinalColor.value.set(color)
+        }
       })
       gui
         .add(this.guiParams, 'uParticleSize')
