@@ -1,0 +1,22 @@
+---
+/**
+ * こちらのファイルはテンプレート用です。
+ * pages/index.astroにコピペして使用してください
+ */
+import Layout from '../layouts/Layout.astro'
+import { title, slug } from '../meta.json'
+---
+
+<Layout {title} repoUrl={`https://github.com/devjam/playground-${slug}`}>
+  <main>
+    {/* contents start */}
+    <div x-data="example" class="flex h-screen w-screen flex-col items-center justify-center">
+      <p x-text="$store.example.count"></p>
+      <button
+        x-on:click="$store.example.increment()"
+        class="rounded bg-blue-500 px-4 py-2 text-white">Increment</button
+      >
+    </div>
+    {/* contents end */}
+  </main>
+</Layout>

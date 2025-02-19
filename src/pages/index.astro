@@ -1,0 +1,17 @@
+---
+import Layout from '../layouts/Layout.astro'
+import { title, slug } from '../meta.json'
+---
+
+<Layout {title} repoUrl={`https://github.com/devjam/playground-${slug}`}>
+  <main>
+    {/* contents start */}
+    <div class="relative flex min-h-svh flex-col items-center justify-center text-30">
+      <ul class="list-disc">
+        <li>Alpine example　→　_alpine-example.astro</li>
+        <li>React example　→　_react-example.astro</li>
+      </ul>
+    </div>
+    {/* contents end */}
+  </main>
+</Layout>
