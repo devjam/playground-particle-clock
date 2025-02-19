@@ -6,11 +6,8 @@ import { title, slug } from '../meta.json'
 <Layout {title} repoUrl={`https://github.com/devjam/playground-${slug}`}>
   <main>
     {/* contents start */}
-    <div class="relative flex min-h-svh flex-col items-center justify-center text-30">
-      <ul class="list-disc">
-        <li>Alpine example　→　_alpine-example.astro</li>
-        <li>React example　→　_react-example.astro</li>
-      </ul>
+    <div x-data="particleClock" class="h-lvh w-screen">
+      <div class="absolute inset-0 size-full" x-ref="container"></div>
     </div>
     {/* contents end */}
   </main>
