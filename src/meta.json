@@ -1,0 +1,12 @@
+{
+  "slug": "particle-clock",
+  "title": "Particle Clock",
+  "author": "komakine",
+  "tags": [
+    "three",
+    "animation",
+    "glsl",
+    "particle"
+  ],
+  "device": "all"
+}
