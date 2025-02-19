@@ -1,5 +1,7 @@
 import { SetupStage } from '@/scripts/webGL/setupStage'
+// @ts-ignore
 import particleClockFragmentShader from '@/scripts/webGL/shaders/particleClock/fragment.glsl'
+// @ts-ignore
 import particleClockVertexShader from '@/scripts/webGL/shaders/particleClock/vertex.glsl'
 import Alpine from 'alpinejs'
 import gsap from 'gsap'
