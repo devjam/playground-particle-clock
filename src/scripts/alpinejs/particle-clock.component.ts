@@ -6,6 +6,7 @@ import gsap from 'gsap'
 import GUI from 'lil-gui'
 import throttle from 'lodash/throttle'
 import * as THREE from 'three'
+import { clamp } from 'three/src/math/MathUtils.js'
 
 type DigitTuple = [
   hourTens: string,
@@ -49,6 +50,7 @@ Alpine.data('particleClock', () => {
       primaryColor: '#2eff3c',
       secondaryColor: '#e51f1f',
       uParticleSize: 0.023,
+      fallDistance: 0.6,
     },
     async init() {
       this.setDom()
@@ -81,8 +83,9 @@ Alpine.data('particleClock', () => {
       this.setGui()
 
       // Resize
+      const throttledOnResize = throttle(this.onResize.bind(this), 300)
       const ro = new ResizeObserver(() => {
-        throttle(this.onResize.bind(this), 200)()
+        throttledOnResize()
       })
       ro.observe(containerRef)
     },
@@ -106,8 +109,10 @@ Alpine.data('particleClock', () => {
             new THREE.Vector2(webGL.width * webGL.pixelRatio, webGL.height * webGL.pixelRatio),
           ),
           uTime: new THREE.Uniform(0),
+          uScale: new THREE.Uniform(1),
           uColor: new THREE.Uniform(new THREE.Color(this.guiParams.primaryColor)),
           uFinalColor: new THREE.Uniform(new THREE.Color(this.guiParams.secondaryColor)),
+          uFallDistance: new THREE.Uniform(this.guiParams.fallDistance),
           uShowProgress: new THREE.Uniform(0),
           uFallProgress: new THREE.Uniform(0),
           uParticleSize: new THREE.Uniform(this.guiParams.uParticleSize),
@@ -185,7 +190,6 @@ Alpine.data('particleClock', () => {
       containerRef = this.$refs.container as HTMLDivElement | null
     },
     setGui() {
-      console.log('setGui')
       gui.addColor(this.guiParams, 'bgColor').onChange((color: string) => {
         webGL.scene.background = new THREE.Color(color)
       })
@@ -213,6 +217,17 @@ Alpine.data('particleClock', () => {
           }
           for (const colon of colons) {
             colon.material.uniforms.uParticleSize.value = value
+          }
+        })
+      gui
+        .add(this.guiParams, 'fallDistance')
+        .min(0.3)
+        .max(5)
+        .step(0.1)
+        .name('uFallDistance')
+        .onChange((value: number) => {
+          for (const digit of digits) {
+            digit.object.material.uniforms.uFallDistance.value = value
           }
         })
     },
@@ -307,7 +322,31 @@ Alpine.data('particleClock', () => {
         )
       }
     },
-    onResize() {},
+    onResize() {
+      const containerWidth = containerRef ? containerRef.clientWidth : window.innerWidth
+      // ここはデザイン時の基準幅（必要に応じて調整）
+      const baseWidth = 1800
+      const scale: number = clamp(containerWidth / baseWidth, 0.5, 1)
+      timer.position.set(0, 0, timer.position.z)
+
+      timer.scale.set(scale, scale, scale)
+      timer.updateWorldMatrix(true, true)
+
+      const timerBox = new THREE.Box3().setFromObject(timer)
+      const center = new THREE.Vector3()
+      timerBox.getCenter(center)
+
+      // 中央に配置
+      timer.position.set(-center.x, -center.y, timer.position.z)
+
+      console.log('scale', scale)
+      for (const digit of digits) {
+        digit.object.material.uniforms.uScale.value = scale
+      }
+      for (const colon of colons) {
+        colon.material.uniforms.uScale.value = scale
+      }
+    },
     setupTick() {
       webGL.tick = () => {
         for (const digit of digits) {
