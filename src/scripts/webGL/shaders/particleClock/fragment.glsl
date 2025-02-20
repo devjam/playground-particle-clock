@@ -1,6 +1,6 @@
 uniform vec3 uFinalColor;
+uniform vec3 uColor;
 
-varying vec3 vColor;
 varying float vAlpha;
 varying float vIntensity;
 
@@ -17,7 +17,7 @@ void main()
     discard;
   }
 
-  finalColor = mix(vColor, uFinalColor, 1.0 - vAlpha);
+  finalColor = mix(uFinalColor, uColor, vAlpha);
   gl_FragColor = vec4(finalColor, vAlpha);
   #include <tonemapping_fragment>
   #include <colorspace_fragment>
