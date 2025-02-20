@@ -1,7 +1,6 @@
 uniform vec3 uFinalColor;
 uniform vec3 uColor;
 
-varying vec3 vColor;
 varying float vAlpha;
 varying float vIntensity;
 

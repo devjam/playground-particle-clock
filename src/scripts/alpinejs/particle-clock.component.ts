@@ -309,9 +309,6 @@ Alpine.data('particleClock', () => {
           value: 1,
           duration: 0.7,
           overwrite: true,
-          onComplete: () => {
-            target.object.material.uniforms.uShowProgress.value = 1
-          },
         },
       )
     },

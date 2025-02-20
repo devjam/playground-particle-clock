@@ -8,7 +8,6 @@ uniform float uShowProgress;
 uniform float uParticleSize;
 uniform float uFallProgress;
 
-varying vec3 vColor;
 varying float vAlpha;
 varying float vIntensity;
 
@@ -54,7 +53,6 @@ void main()
     gl_PointSize *= (1.0 / - viewPosition.z);
 
     // Varyings
-    vColor = uColor;
     vAlpha = (1.0 - alphaProgress) * showAlphaProgress;
     vIntensity = textureIntensity * uShowProgress;
 }
