@@ -27,11 +27,13 @@ void main()
     float delay = noiseValue * 0.7;
     // 各パーティクルの個別進行度を計算
     float individualFallProgress = clamp((uFallProgress - delay) / (1.0 - delay), 0.0, 1.0);
-    float alphaProgress = remap(individualFallProgress, 0.2, 0.5, 0.0, 1.0);
+    float alphaProgress = remap(individualFallProgress, 0.15, 0.6, 0.0, 1.0);
+    alphaProgress = smoothstep(0.0, 1.0, alphaProgress);
 
     // Show animation
     float individualShowProgress = clamp((uShowProgress - delay) / (1.0 - delay), 0.0, 1.0);
-    float showAlphaProgress = remap(individualShowProgress, 0.75, 0.9, 0.0, 1.0);
+    float showAlphaProgress = remap(individualShowProgress, 0.62, 0.9, 0.0, 1.0);
+    showAlphaProgress = smoothstep(0.0, 1.0, showAlphaProgress);
 
     vec3 newPosition = position;
     newPosition.y -= individualFallProgress * uFallDistance;
